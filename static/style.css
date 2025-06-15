@@ -1,0 +1,201 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #e3f2fd, #ffffff);
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(90deg, 
+        #ff9a9e, #fad0c4, #fbc2eb, #a18cd1, 
+        #84fab0, #8fd3f4, #f6d365, #fda085, #ff9a9e
+    );
+    background-size: 300% 100%;
+    animation: rainbowScroll 20s linear infinite;
+
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+
+    /* Mờ mờ huyền ảo */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+@keyframes rainbowScroll {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+}
+#blur-layer {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    backdrop-filter: blur(15px);
+    z-index: -1;
+}
+#chat-box {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 132, 255, 0.1);
+    width: 100%;
+    max-width: 500px;
+    transition: all 0.3s ease-in-out;
+}
+
+#chat-box:hover {
+    box-shadow: 0 15px 30px rgba(0, 132, 255, 0.2);
+}
+
+h3 {
+    color: #0084ff;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+a {
+    display: block;
+    text-align: center;
+    color: #0084ff;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+#messages {
+    list-style-type: none;
+    padding: 12px;
+    margin: 0;
+    max-height: 350px;
+    overflow-y: auto;
+
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(6px);
+    border-radius: 16px;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    scroll-behavior: smooth;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#messages li {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 8px 12px;
+    border-radius: 12px;
+    max-width: 80%;
+    font-size: 14px;
+    word-wrap: break-word;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Tin nhắn của bạn */
+.my-message {
+    background-color: #dcf8c6;
+    color: #000;
+    float: right;
+    border-bottom-right-radius: 0;
+    text-align: right;
+}
+
+/* Tin nhắn người khác */
+.other-message {
+    background-color: #f1f0f0;
+    color: #000;
+    float: left;
+    border-bottom-left-radius: 0;
+    text-align: left;
+}
+
+input[type="text"],
+input[type="file"],
+input[type="password"],
+input[type="search"],
+#msg {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    transition: border 0.3s;
+}
+
+input:focus {
+    border-color: #0084ff;
+    outline: none;
+}
+
+button {
+    padding: 10px 16px;
+    background: #0084ff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #006fe6;
+}
+
+#gif-search {
+    margin-top: 15px;
+}
+
+#gif-search input {
+    width: 70%;
+    display: inline-block;
+}
+
+#gif-search button {
+    display: inline-block;
+    margin-top: 0;
+}
+
+#gifResults {
+    margin-top: 10px;
+}
+
+#top-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 15px 20px;
+    box-shadow: 0 2px 10px rgba(0, 132, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+#top-bar h3 {
+    margin: 0;
+    color: #0084ff;
+    font-size: 18px;
+}
+
+#top-bar a {
+    color: #0084ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#top-bar a:hover {
+    text-decoration: underline;
+}
+
+
+#chat-box {
+    margin-top: 80px;
+}
+

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zalo Chat Clone</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+</head>
+<body>
+
+    <div id="top-bar">
+        <h3>Hello {{ username }}!</h3>
+        <a href="/logout">Logout</a>
+    </div>
+
+
+    <div id="chat-box">
+        <ul id="messages"></ul>
+        <input id="msg" autocomplete="off" placeholder="Nhập tin nhắn..." onkeydown="checkEnter(event)" />
+        <button onclick="sendMsg()">Gửi</button>
+<button onclick="document.getElementById('imageInput').click()" style="font-weight: bold;">
+    <img src="/static/download.png" alt="Chọn ảnh" style="width: 20px; vertical-align: middle;">
+</button>
+<input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="sendImage()" />
+
+<!-- Nút GIF -->
+<button id="toggleGif" onclick="toggleGifBox()" style="font-weight: bold;">GIF</button>
+
+<!-- Khung tìm GIF (ẩn ban đầu) -->
+<div id="gif-search" style="display: none; margin-top: 10px;">
+    <input type="text" id="gifQuery" placeholder="Tìm ảnh gif dễ thương..." />
+    <button onclick="searchGifs()">Tìm</button>
+    <div id="gifResults" style="display:flex; gap: 5px; flex-wrap: wrap; margin-top: 10px;"></div>
+</div>
+
+    </div>
+
+
+
+
+    <script>
+    const socket = io();
+let name = "{{ username }}";
+
+
+    function enterChat() {
+        name = document.getElementById('username').value.trim();
+        if (name) {
+            document.getElementById('login-box').style.display = 'none';
+            document.getElementById('chat-box').style.display = 'block';
+            document.getElementById('msg').focus();
+        }
+    }
+
+socket.on('message', function(msg) {
+    const item = document.createElement('li');
+
+    // Kiểm tra nếu msg bắt đầu bằng tên của chính mình
+    if (msg.startsWith(`${name}:`)) {
+        item.className = 'my-message';
+        item.innerHTML = msg.replace(`${name}:`, "<strong>Bạn:</strong>");
+    } else {
+        item.className = 'other-message';
+        item.innerHTML = msg;
+    }
+
+    document.getElementById('messages').appendChild(item);
+    item.scrollIntoView();
+});
+
+function sendMsg() {
+    const msgBox = document.getElementById('msg');
+    const msg = msgBox.value.trim();
+    if (msg) {
+        socket.send(`${name}: ${msg}`);
+        msgBox.value = '';
+    }
+}
+
+
+    function checkEnter(event) {
+        if (event.key === "Enter") {
+            sendMsg();
+        }
+    }
+
+    function sendImage() {
+        const input = document.getElementById('imageInput');
+        const file = input.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        }).then(res => res.json())
+          .then(data => {
+              if (data.url) {
+                  socket.send(`${name}: <img src="${data.url}" style="max-width:200px;">`);
+              }
+          });
+    }
+
+
+const GIPHY_API_KEY = 'NDZmATih80wMDbgXjbJarMxQxZtWKOdf'; 
+
+function searchGifs() {
+    const query = document.getElementById('gifQuery').value.trim();
+    if (!query) return;
+
+    fetch(`https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(query)}&limit=8`)
+        .then(res => res.json())
+        .then(data => {
+            const results = document.getElementById('gifResults');
+            results.innerHTML = '';
+            data.data.forEach(gif => {
+                const img = document.createElement('img');
+                img.src = gif.images.fixed_height_small.url;
+                img.style = 'cursor:pointer; max-height:100px; border-radius:10px;';
+                img.onclick = () => {
+                    socket.send(`${name}: <img src="${gif.images.fixed_height.url}" style="max-width:200px;">`);
+                    results.innerHTML = ''; // Ẩn sau khi gửi
+                };
+                results.appendChild(img);
+            });
+        });
+}
+   
+   
+
+    if (name && name !== "None") {
+        document.getElementById('chat-box').style.display = 'block';
+    }
+    function toggleGifBox() {
+    const box = document.getElementById('gif-search');
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}
+
+</script>
+</body>
+</html>
+
